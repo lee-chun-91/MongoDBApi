@@ -50,7 +50,9 @@ public class MongoDBService
     // public async Task UpdateAsync(PhoneInfo updatedPhoneInfo) =>
     //     await _phoneBookCollection.ReplaceOneAsync(x => x.Id == updatedPhoneInfo.Id, updatedPhoneInfo);
     
-    public async Task RemoveAsync(string id) =>
+    public async Task DeleteAsync(string id) =>
         await _phoneBookCollection.DeleteOneAsync(x => x.Id == id);
+
+    public async Task<DeleteResult> DeleteAsync() => await _phoneBookCollection.DeleteManyAsync(_ => true);
 
 }

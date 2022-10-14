@@ -1,3 +1,4 @@
+using System.Globalization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -12,13 +13,20 @@ public class PhoneInfo
     public string? Id { get; set; }
 
     [BsonElement("name")] 
-    public string Name { get; set; } = null!;
+    public string name { get; set; } = null!;
 
     [BsonElement("email")]
-    public string Email { get; set; } = null!;
+    public string email { get; set; } = null!;
     
     [BsonElement("phoneNumber")]
-    public string PhoneNumber { get; set; } = null!;
+    public string phoneNumber { get; set; } = null!;
+
+    [BsonElement("date")]
+    public string date { get; set; }
+    
+    // [BsonElement("id")]
+    // public string id { get; set; }
+
 
     
     // [BsonElement("items")]

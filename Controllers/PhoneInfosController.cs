@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MongoDBApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/phoneInfos")]
 public class PhoneInfosController : ControllerBase
 {
         private readonly MongoDBService _mongoDbService;
@@ -14,7 +14,7 @@ public class PhoneInfosController : ControllerBase
         public PhoneInfosController(MongoDBService mongoDbService) =>
             _mongoDbService = mongoDbService;
 
-        [HttpGet("GetInfoList")]
+        [HttpGet("getInfoList")]
         public async Task<List<PhoneInfo>> GetInfoList()
         {
             return await _mongoDbService.GetAsync();
@@ -22,7 +22,7 @@ public class PhoneInfosController : ControllerBase
 
        
         // [HttpGet("{id:length(24)}")]
-        [HttpGet("GetItem/{id:length(24)}")]
+        [HttpGet("getItem/{id:length(24)}")]
         public async Task<ActionResult<PhoneInfo>> GetItem(string id)
         {
             var phoneInfo = await _mongoDbService.GetAsync(id);
@@ -30,7 +30,7 @@ public class PhoneInfosController : ControllerBase
             return phoneInfo;
         }
 
-        [HttpPost("AddItem")]
+        [HttpPost("addItem")]
         public async Task<IActionResult> AddItem([FromBody] PhoneInfo phoneInfo)
         {
             await _mongoDbService.CreateAsync(phoneInfo);
@@ -39,7 +39,7 @@ public class PhoneInfosController : ControllerBase
         }
 
         // [HttpPost("{id:length(24)}")]
-        [HttpPost("UpdateItem/{id:length(24)}")]
+        [HttpPost("updateItem/{id:length(24)}")]
         public async Task<IActionResult> UpdateItem(string id, [FromBody] PhoneInfo updatedPhoneInfo)
         // public async Task<IActionResult> UpdateItem([FromBody] PhoneInfo updatedPhoneInfo)
         {
@@ -59,8 +59,8 @@ public class PhoneInfosController : ControllerBase
         }
 
         // [HttpDelete("{id:length(24)}")]
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpPost("deleteItem/{id:length(24)}")]
+        public async Task<IActionResult> Delete([FromQuery] string id)
         {
             var phoneInfo = await _mongoDbService.GetAsync(id);
 
@@ -69,8 +69,16 @@ public class PhoneInfosController : ControllerBase
                 return NotFound();
             }
 
-            await _mongoDbService.RemoveAsync(id);
+            await _mongoDbService.DeleteAsync(id);
 
+            return NoContent();
+        }
+
+        [HttpPost("deleteAll")]
+        public async Task<ActionResult> DeleteAll()
+        {
+            await _mongoDbService.DeleteAsync();
+            
             return NoContent();
         }
 }
